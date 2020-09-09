@@ -1,0 +1,78 @@
+CREATE TABLE Invoice(
+
+	invoiceID char(8) NOT NULL,
+	cusId char(8) NOT NULL,
+	HP_reserveID char(8) NOT NULL,
+	R_reserveID char(8) NOT NULL,
+	RH_reserveID int NOT NULL,
+	date datetime,
+	description varchar(200),
+	totalAmmount float,
+	type Varchar(20),
+
+	constraint pk_Invoice primary key(HP_reserveID),
+	constraint fk1_Invoice foreign key (cusId) references customer(cusId),
+	constraint fk2_Invoice foreign key (HP_reserveID) references HotelPackageBooking(HP_reserveID),
+	constraint fk3_Invoice foreign key (R_reserveID) references RoomReservation(R_reserveID),
+	constraint fk4_Invoice foreign key (RH_reserveID) references ReceptionHallBooking(RH_reserveID),
+)
+
+
+
+CREATE TABLE ReceptionHallBooking_Package(
+
+	RH_reserveID int  NOT NULL,
+	RH_packageID int IDENTITY(1,1) NOT NULL,
+	
+
+	constraint pk_ReceptionHallBooking_Package primary key(RH_reserveID , RH_packageID),
+	constraint fk1_ReceptionHallBooking_Package foreign key (RH_reserveID) references ReceptionHallBooking(RH_reserveID),
+	constraint fk2_ReceptionHallBooking_Package foreign key (RH_packageID) references ReceptionHallPackage(RH_packageID)
+)
+
+
+CREATE TABLE ReceptionHallBooking(
+
+	RH_reserveID int IDENTITY(1,1) NOT NULL,
+	cusId char(8) NOT NULL,
+	theme varchar(20),
+	date date,
+	timeFrom time,
+	timeTo time,
+
+	constraint pk_ReceptionHallBooking primary key(RH_reserveID),
+	constraint fk1_ReceptionHallBooking foreign key (cusId) references customer(cusId),
+)
+
+
+
+
+CREATE TABLE ReceptionHallBooking_FoodMenuItems(
+
+	ItemNo char(8) NOT NULL,
+	RH_packageID int IDENTITY(1,1) NOT NULL,
+	
+
+	constraint pk_ReceptionHallBooking_FoodMenuItems primary key(ItemNo , RH_packageID),
+	constraint fk1_ReceptionHallBooking_FoodMenuItems foreign key (ItemNo) references FoodMenuItems(ItemNo),
+	constraint fk2_ReceptionHallBooking_FoodMenuItems foreign key (RH_packageID) references ReceptionHallPackage(RH_packageID)
+)
+
+
+
+CREATE TABLE ReceptionHallPackage(
+
+	RH_packageID int IDENTITY(1,1) NOT NULL,
+	theme varchar(20),
+	price float(10),
+	description varchar(30),
+	img varchar(250),
+
+	constraint pk_ReceptionHallPackage primary key(RH_packageID),
+)
+
+
+
+
+
+
